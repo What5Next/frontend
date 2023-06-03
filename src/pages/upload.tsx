@@ -5,12 +5,14 @@ import { useDropzone } from "react-dropzone";
 import { NFTStorage } from "nft.storage";
 import nearStore from "@/store/nearStore";
 import { getWalletAuthKey } from "@/utils/auth";
+import { NftMintCompleteModal } from "@/components/Modal";
 
 const client = new NFTStorage({
   token: process.env.NEXT_PUBLIC_IPFS_API_KEY as string,
 });
 
 const Upload = () => {
+  const [isOpen, setIsOpen] = useState<boolean>(false);
   const [images, setImages] = useState<File[]>([]);
   const [name, setName] = useState<string>("");
   const [desc, setDesc] = useState<string>("");
@@ -25,7 +27,7 @@ const Upload = () => {
     };
   }, []);
 
-  const { acceptedFiles, getRootProps, getInputProps } = useDropzone({
+  const { getRootProps, getInputProps } = useDropzone({
     accept: { "image/*": [".jpeg", ".jpg", ".png"] },
     multiple: true,
     onDrop: (acceptedFiles) => {
@@ -38,23 +40,29 @@ const Upload = () => {
       return alert("No images");
     }
 
-    const cid = await client.storeDirectory(images);
+    try {
+      const cid = await client.storeDirectory(images);
 
-    await wallet?.createNewNftContract(name);
-    const nftContractAccounts: string[] =
-      await wallet?.getNftsContractAccounts();
+      await wallet?.createNewNftContract(name);
+      const nftContractAccounts: string[] =
+        await wallet?.getNftsContractAccounts();
 
-    const nftContractId = nftContractAccounts.find((accountId) =>
-      accountId.includes(name)
-    );
+      const nftContractId = nftContractAccounts.find((accountId) =>
+        accountId.includes(name)
+      );
 
-    await wallet.newDefaultMeta(nftContractId, getWalletAuthKey());
+      await wallet.newDefaultMeta(nftContractId, getWalletAuthKey());
 
-    await wallet.nftMint(nftContractId, "#" + name, getWalletAuthKey(), {
-      title: name,
-      description: desc,
-      media: `https://${cid}.ipfs.nftstorage.link/${images[0].name}`,
-    });
+      await wallet.nftMint(nftContractId, "#" + name, getWalletAuthKey(), {
+        title: name,
+        description: desc,
+        media: `https://${cid}.ipfs.nftstorage.link/${images[0].name}`,
+      });
+
+      setIsOpen(true);
+    } catch (e) {
+      console.error(e);
+    }
   }, [name, desc, images]);
 
   return (
@@ -131,10 +139,17 @@ const Upload = () => {
       <button
         type="button"
         onClick={onUpload}
-        className="fixed bottom-0 flex justify-center items-center bg-gray500 w-full h-16 font-bold text-white text-xl"
+        className="fixed bottom-0 flex justify-center items-center bg-purple w-full h-16 font-bold text-white text-xl disabled:bg-gray500"
+        disabled={name.length === 0 || desc.length === 0}
       >
         Upload
       </button>
+
+      <NftMintCompleteModal
+        imageFile={images[0]}
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+      />
     </div>
   );
 };
