@@ -18,6 +18,8 @@ import { setupLedger } from "@near-wallet-selector/ledger";
 import { setupMyNearWallet } from "@near-wallet-selector/my-near-wallet";
 import { getWalletAuthKey } from "@/utils/auth";
 
+const NFT_FACTORY_CONTRACT_ADDRESS = process.env
+  .NEXT_PUBLIC_NFT_CONTRACT as string;
 const THIRTY_TGAS = "50000000000000";
 const NO_DEPOSIT = "0";
 
@@ -115,13 +117,16 @@ export class Wallet {
     args = {},
     gas = THIRTY_TGAS,
     deposit = NO_DEPOSIT,
+    amount,
   }: {
     contractId: string;
     method: string;
     args: any;
     gas?: string;
     deposit?: string;
+    amount?: string;
   }) {
+    console.log(amount);
     // Sign a transaction with the "FunctionCall" action
     return await this.wallet.signAndSendTransaction({
       signerId: this.accountId,
@@ -134,6 +139,7 @@ export class Wallet {
             args,
             gas,
             deposit,
+            amount,
           },
         },
       ],
@@ -148,5 +154,54 @@ export class Wallet {
     // Retrieve transaction result from the network
     const transaction = await provider.txStatus(txhash, "unnused");
     return providers.getTransactionLastResult(transaction);
+  }
+
+  async getNftsContractAccounts() {
+    return await this.viewMethod({
+      contractId: NFT_FACTORY_CONTRACT_ADDRESS,
+      method: "get_nfts_contract_accounts",
+    });
+  }
+
+  async createNewNftContract(name: string) {
+    await this.callMethod({
+      contractId: NFT_FACTORY_CONTRACT_ADDRESS,
+      method: "create_new_nft_contract",
+      args: {
+        prefix: name,
+      },
+    });
+  }
+
+  async newDefaultMeta(nftContractId: string, ownerId: string) {
+    await this.callMethod({
+      contractId: nftContractId,
+      method: "new_default_meta",
+      args: {
+        owner_id: ownerId,
+      },
+    });
+  }
+
+  async nftMint(
+    contractId: string,
+    tokenId: string,
+    tokenOwnerId: string,
+    tokenMetadata: {
+      title: string;
+      description: string;
+      media: string;
+    }
+  ) {
+    await this.callMethod({
+      contractId,
+      method: "nft_mint",
+      args: {
+        token_id: tokenId,
+        token_owner_id: tokenOwnerId,
+        token_metadata: tokenMetadata,
+      },
+      amount: "10000000000000000000000",
+    });
   }
 }

@@ -5,13 +5,13 @@ import { useCallback, useEffect } from "react";
 import "@/styles/globals.css";
 import nearStore from "@/store/nearStore";
 
-const CONTRACT_ADDRESS = process.env.NEXT_PUBLIC_CONTRACT_NAME;
+const USER_CONTRACT_ADDRESS = process.env.NEXT_PUBLIC_USER_CONTRACT;
 
 const App = ({ Component, pageProps }: AppProps) => {
   const { init, setIsWalletStarted, setFtBalance } = nearStore();
 
   const initApp = useCallback(async () => {
-    const wallet = init(CONTRACT_ADDRESS);
+    const wallet = init(USER_CONTRACT_ADDRESS);
 
     try {
       await wallet?.startUp();

@@ -4,17 +4,18 @@ import { useCallback, useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { NFTStorage } from "nft.storage";
 import nearStore from "@/store/nearStore";
+import { getWalletAuthKey } from "@/utils/auth";
 
 const client = new NFTStorage({
   token: process.env.NEXT_PUBLIC_IPFS_API_KEY as string,
 });
 
-const CollectionCreate = () => {
+const Upload = () => {
   const [images, setImages] = useState<File[]>([]);
   const [name, setName] = useState<string>("");
   const [desc, setDesc] = useState<string>("");
 
-  const {} = nearStore();
+  const { wallet } = nearStore();
 
   useEffect(() => {
     return () => {
@@ -38,7 +39,28 @@ const CollectionCreate = () => {
     }
 
     const cid = await client.storeDirectory(images);
-  }, [images]);
+
+    await wallet?.createNewNftContract(name);
+    const nftContractAccounts: string[] =
+      await wallet?.getNftsContractAccounts();
+
+    const nftContractId = nftContractAccounts.find((accountId) =>
+      accountId.includes(name)
+    );
+
+    await wallet.newDefaultMeta(nftContractId, getWalletAuthKey());
+
+    const res = await wallet.nftMint(
+      nftContractId,
+      "#" + name,
+      getWalletAuthKey(),
+      {
+        title: name,
+        description: desc,
+        media: `https://${cid}.ipfs.nftstorage.link/${images[0]["path"]}`,
+      }
+    );
+  }, [name, desc, images]);
 
   return (
     <div className="pb-12">
@@ -122,4 +144,4 @@ const CollectionCreate = () => {
   );
 };
 
-export default CollectionCreate;
+export default Upload;
