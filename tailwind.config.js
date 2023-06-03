@@ -17,7 +17,7 @@ module.exports = {
         darkGray: "#272727",
         lightGray: "#666666",
         gray200: "#E8E8E8",
-        disabled: "#A0A4A8",
+        gray500: "#A0A4A8",
         pink: "#C746DB",
       },
       fontFamily: {

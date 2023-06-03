@@ -2,13 +2,14 @@ import { useCallback, useState } from "react";
 import Image from "next/image";
 
 import {
-  categoryTab,
   mainSliderItems,
   suggestTabList,
   trendingNFTList,
+  categoryTab,
 } from "@/data";
 import { Slider } from "@/components/Slider";
 import { NavTab, TabItem } from "@/components/Tab";
+import { NFTCollectionCard } from "@/components/NFT";
 
 const Home = () => {
   const [currentCategoryTab, setCurrentCategoryTab] = useState<string | number>(
@@ -36,12 +37,6 @@ const Home = () => {
           alt="hamberger svg"
         />
         <div className="flex gap-1">
-          {/* <Image
-            src="/svgs/.svg"
-            width={18}
-            height={20}
-            alt="on-stage-logo"
-          /> */}
           <h1 className="font-bold">ON Stage</h1>
         </div>
         <div className="w-4.5" />
@@ -65,20 +60,15 @@ const Home = () => {
         })}
       </div>
 
-      <div className="grid grid-cols-3 gap-x-2.5 gap-y-2.5 px-4">
-        {trendingNFTList.map(({ id, title, price, image }) => {
-          return (
-            <div key={id} className="h-40 shadow rounded">
-              <Image
-                src={image}
-                className="rounded"
-                width={300}
-                height={300}
-                alt="trend-thumbnail"
-              />
-            </div>
-          );
-        })}
+      <div className="grid grid-cols-3 gap-4 gap-y-6 px-5">
+        {trendingNFTList.map(({ id, title, price, image }) => (
+          <NFTCollectionCard
+            id={id}
+            title={title}
+            price={price}
+            image={image}
+          />
+        ))}
       </div>
 
       <button className="flex justify-center items-center py-3 m-5 bg-gray200 rounded-lg shadow font-bold text-lg">

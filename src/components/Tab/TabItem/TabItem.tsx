@@ -22,7 +22,7 @@ const TabItem = ({
       className={cls(
         "font-bold ml-5 text-lg",
         hasUnderline ? "pb-2 border-gray" : "",
-        isActive ? "text-black" : "text-disabled",
+        isActive ? "text-black" : "text-gray500",
         hasUnderline && isActive ? " border-b-4" : "border-0"
       )}
       onClick={() => {
