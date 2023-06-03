@@ -1,7 +1,12 @@
 import { cls } from "@/utils/tailwindCss";
 import Image from "next/image";
 import { useState } from "react";
-import { Accept, useDropzone } from "react-dropzone";
+import { useDropzone } from "react-dropzone";
+import { NFTStorage } from "nft.storage";
+
+const client = new NFTStorage({
+  token: process.env.NEXT_PUBLIC_IPFS_API_KEY as string,
+});
 
 const CollectionCreate = () => {
   const [images, setImages] = useState<any[]>([]);
@@ -13,6 +18,14 @@ const CollectionCreate = () => {
       setImages((prevImages) => [...prevImages, ...acceptedFiles]);
     },
   });
+
+  const onUpload = async () => {
+    if (!images || images.length === 0) {
+      return alert("No images");
+    }
+
+    const cid = await client.storeDirectory(images);
+  };
 
   return (
     <div className="pb-12">
@@ -40,12 +53,12 @@ const CollectionCreate = () => {
             )}
           >
             {images.map((image, index) => (
-              <li className="rounded" key={index}>
+              <li className="max-h-36 rounded-xl overflow-hidden" key={index}>
                 <Image
                   src={URL.createObjectURL(image)}
                   width={300}
                   height={300}
-                  className="rounded"
+                  className="rounded-xl"
                   alt={`uploaded-${index}`}
                 />
               </li>
@@ -74,9 +87,13 @@ const CollectionCreate = () => {
         </div>
       </div>
 
-      <div className="fixed bottom-0 flex justify-center items-center bg-gray500 w-full h-16 font-bold text-white text-xl">
+      <button
+        type="button"
+        onClick={onUpload}
+        className="fixed bottom-0 flex justify-center items-center bg-gray500 w-full h-16 font-bold text-white text-xl"
+      >
         Upload
-      </div>
+      </button>
     </div>
   );
 };
