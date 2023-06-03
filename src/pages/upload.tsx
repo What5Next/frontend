@@ -75,7 +75,13 @@ const Upload = () => {
           alt="hamberger svg"
         />
         <div className="flex gap-1">
-          <h1 className="font-bold">OnStage</h1>
+          <Image
+            src="/svgs/onstage-logo.svg"
+            width={18}
+            height={20}
+            alt="onstage-logo"
+          />
+          <h1 className="font-bold">onstage</h1>
         </div>
         <div className="w-4.5" />
       </div>
