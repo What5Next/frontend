@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-const CreateComic = () => {
+const CollectionCreate = () => {
   return (
     <div>
       <div>
@@ -15,4 +15,4 @@ const CreateComic = () => {
   );
 };
 
-export default CreateComic;
+export default CollectionCreate;

@@ -10,8 +10,10 @@ import {
 import { Slider } from "@/components/Slider";
 import { NavTab, TabItem } from "@/components/Tab";
 import { NFTCollectionCard } from "@/components/NFT";
+import { useRouter } from "next/router";
 
 const Home = () => {
+  const router = useRouter();
   const [currentCategoryTab, setCurrentCategoryTab] = useState<string | number>(
     categoryTab[0]
   );
@@ -26,6 +28,10 @@ const Home = () => {
   const handleChangeCurrentSuggestTab = useCallback((id: string | number) => {
     setCurrentSuggetsTab(id);
   }, []);
+
+  const handleNFTClick = (id: string) => {
+    router.push(`//${id}`);
+  };
 
   return (
     <div className="flex flex-col pb-24">
@@ -67,12 +73,36 @@ const Home = () => {
             title={title}
             price={price}
             image={image}
+            onClick={() => handleNFTClick(id)}
           />
         ))}
       </div>
 
       <button className="flex justify-center items-center py-3 m-5 bg-gray200 rounded-lg shadow font-bold text-lg">
         See more
+      </button>
+
+      <button className="relative mx-5 my-12 rounded-md overflow-hidden h-28">
+        <div className="absolute h-full flex flex-col justify-between p-4">
+          <Image
+            src="/svgs/next-logo.svg"
+            width={16}
+            height={16}
+            className="ml-2"
+            alt="next-logo"
+          />
+          <p className="text-left text-white font-bold">
+            Put your
+            <br /> character on stage
+          </p>
+        </div>
+        <Image
+          src="/images/banner.png"
+          width={1080}
+          height={1080}
+          className=""
+          alt="main-banner"
+        />
       </button>
 
       <div className="h-full overflow-y-auto whitespace-nowrap scrollbar-hide">
@@ -88,6 +118,18 @@ const Home = () => {
           onChangeTab={handleChangeCurrentCategoryTab}
         />
       </div>
+
+      <div className="grid grid-cols-3 gap-3 px-5 my-3">
+        {mainSliderItems.map(({ id, image }) => (
+          <div key={id} className="rounded-md overflow-hidden">
+            <Image src={image} width={360} height={600} alt={id + "image"} />
+          </div>
+        ))}
+      </div>
+
+      <button className="flex justify-center items-center py-3 m-5 bg-gray200 rounded-lg shadow font-bold text-lg">
+        See more
+      </button>
     </div>
   );
 };

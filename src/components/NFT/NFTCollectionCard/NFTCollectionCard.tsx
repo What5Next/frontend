@@ -5,6 +5,7 @@ interface NFTCollectionCardProps {
   image: string;
   title: string;
   price: number;
+  onClick?: () => void;
 }
 
 const NFTCollectionCard = ({
@@ -12,11 +13,13 @@ const NFTCollectionCard = ({
   image,
   title,
   price,
+  onClick,
 }: NFTCollectionCardProps) => {
   return (
     <button
       key={id}
-      className="relative h-48 shadow overflow-hidden rounded font-medium flex items-end"
+      onClick={onClick}
+      className="relative h-48 shadow overflow-hidden rounded-md font-medium flex items-end"
     >
       <Image
         src={image}
