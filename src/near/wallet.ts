@@ -117,16 +117,13 @@ export class Wallet {
     args = {},
     gas = THIRTY_TGAS,
     deposit = NO_DEPOSIT,
-    amount,
   }: {
     contractId: string;
     method: string;
     args: any;
     gas?: string;
     deposit?: string;
-    amount?: string;
   }) {
-    console.log(amount);
     // Sign a transaction with the "FunctionCall" action
     return await this.wallet.signAndSendTransaction({
       signerId: this.accountId,
@@ -139,7 +136,6 @@ export class Wallet {
             args,
             gas,
             deposit,
-            amount,
           },
         },
       ],
@@ -201,7 +197,7 @@ export class Wallet {
         token_owner_id: tokenOwnerId,
         token_metadata: tokenMetadata,
       },
-      amount: "10000000000000000000000",
+      deposit: "10000000000000000000000",
     });
   }
 }

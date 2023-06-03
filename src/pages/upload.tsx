@@ -50,16 +50,11 @@ const Upload = () => {
 
     await wallet.newDefaultMeta(nftContractId, getWalletAuthKey());
 
-    const res = await wallet.nftMint(
-      nftContractId,
-      "#" + name,
-      getWalletAuthKey(),
-      {
-        title: name,
-        description: desc,
-        media: `https://${cid}.ipfs.nftstorage.link/${images[0]["path"]}`,
-      }
-    );
+    await wallet.nftMint(nftContractId, "#" + name, getWalletAuthKey(), {
+      title: name,
+      description: desc,
+      media: `https://${cid}.ipfs.nftstorage.link/${images[0].name}`,
+    });
   }, [name, desc, images]);
 
   return (
