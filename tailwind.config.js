@@ -10,6 +10,7 @@ module.exports = {
       colors: {
         black: "#121212",
         white: "#FFF",
+        strongWhite: "#F5F5F5",
         primary: "#B28BF4",
         secondary: "#62D6C5",
         red: "#C26C7B",
@@ -18,6 +19,7 @@ module.exports = {
         lightGray: "#666666",
         gray200: "#E8E8E8",
         gray500: "#A0A4A8",
+        gray700: "#52575C",
         pink: "#C746DB",
       },
       fontFamily: {

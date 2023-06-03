@@ -43,7 +43,7 @@ const Home = () => {
           alt="hamberger svg"
         />
         <div className="flex gap-1">
-          <h1 className="font-bold">ON Stage</h1>
+          <h1 className="font-bold">OnStage</h1>
         </div>
         <div className="w-4.5" />
       </div>
