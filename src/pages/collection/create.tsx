@@ -1,15 +1,28 @@
 import { cls } from "@/utils/tailwindCss";
 import Image from "next/image";
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { NFTStorage } from "nft.storage";
+import nearStore from "@/store/nearStore";
 
 const client = new NFTStorage({
   token: process.env.NEXT_PUBLIC_IPFS_API_KEY as string,
 });
 
 const CollectionCreate = () => {
-  const [images, setImages] = useState<any[]>([]);
+  const [images, setImages] = useState<File[]>([]);
+  const [name, setName] = useState<string>("");
+  const [desc, setDesc] = useState<string>("");
+
+  const {} = nearStore();
+
+  useEffect(() => {
+    return () => {
+      setName("");
+      setDesc("");
+      setImages([]);
+    };
+  }, []);
 
   const { acceptedFiles, getRootProps, getInputProps } = useDropzone({
     accept: { "image/*": [".jpeg", ".jpg", ".png"] },
@@ -19,13 +32,13 @@ const CollectionCreate = () => {
     },
   });
 
-  const onUpload = async () => {
+  const onUpload = useCallback(async () => {
     if (!images || images.length === 0) {
       return alert("No images");
     }
 
     const cid = await client.storeDirectory(images);
-  };
+  }, [images]);
 
   return (
     <div className="pb-12">
@@ -78,11 +91,22 @@ const CollectionCreate = () => {
             </li>
           </ul>
         </div>
+
         <div className="flex flex-col gap-2.5">
           <h2 className="text-xl font-bold">Character name</h2>
           <input
             className="bg-white border rounded-xl font-bold border-gray500 p-4"
             placeholder="Character name"
+            onChange={(e) => setName(e.target.value)}
+          />
+        </div>
+
+        <div className="flex flex-col gap-2.5">
+          <h2 className="text-xl font-bold">Description</h2>
+          <textarea
+            className="bg-white border rounded-xl font-bold border-gray500 p-4"
+            placeholder="description"
+            onChange={(e) => setDesc(e.target.value)}
           />
         </div>
       </div>
