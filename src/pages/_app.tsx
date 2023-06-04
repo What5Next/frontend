@@ -28,17 +28,20 @@ const App = ({ Component, pageProps }: AppProps) => {
   return (
     <>
       <Head>
-        <title>ON Stage</title>
-        <meta name="description" content="" />
-        <link rel="icon" href="" />
+        <title>onstage</title>
+        <meta name="description" content="Author's Image generate NFT" />
+        <link rel="icon" href="/svgs/onstage-logo.svg" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="keywords" content="Web3, AI-Image, Near, Coummunity" />
-        <meta name="og:site_name" content="ON Stage" />
+        <meta name="og:site_name" content="onstage" />
         <meta name="og:title" content="AI NFT App" />
-        <meta name="og:description" content="" />
-        <meta name="og:url" content="https://" />
+        <meta name="og:description" content="Author's Image generate NFT" />
+        <meta
+          name="og:url"
+          content="https://frontend-onstage-nft.vercel.app/"
+        />
         <meta name="og:type" content="website" />
-        <meta name="og:image" content="" />
+        <meta name="og:image" content="/svgs/onstage-logo.svg" />
       </Head>
 
       <Component {...pageProps} />

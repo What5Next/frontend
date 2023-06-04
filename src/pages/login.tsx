@@ -19,12 +19,12 @@ const Login = () => {
     <div className="bg-black flex flex-col justify-center items-center w-full min-h-screen p-5 gap-20">
       <div className="flex flex-col items-center gap-5">
         <Image
-          src="/svgs/next-logo.svg"
+          src="/svgs/onstage-logo.svg"
           width={105}
           height={100}
-          alt="next-logo"
+          alt="onstage-logo"
         />
-        <h1 className="text-center font-bold text-white text-3xl">on stage</h1>
+        <h1 className="text-center font-bold text-white text-3xl">onstage</h1>
       </div>
       <button
         className="flex justify-center text-white rounded-lg border border-white w-full py-4"
