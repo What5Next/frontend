@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/router";
 
 const Home = () => {
@@ -7,12 +8,14 @@ const Home = () => {
   return (
     <div className="bg-black min-h-screen relative pb-20">
       <div className="flex justify-between p-6 bg-black text-white">
-        <Image
-          src="/svgs/hamberger.svg"
-          width={18}
-          height={20}
-          alt="hamberger svg"
-        />
+        <button type="button" onClick={() => router.push("/login")}>
+          <Image
+            src="/svgs/hamberger.svg"
+            width={18}
+            height={20}
+            alt="hamberger svg"
+          />
+        </button>
         <div className="flex gap-1">
           <Image
             src="/svgs/onstage-logo.svg"
@@ -47,21 +50,22 @@ const Home = () => {
       </div>
 
       <div className="py-12 px-5 text-white">
-        <p className="font-bold text-2xl bg-gradient-to-r from-cyan-500 to-blue-500 bg-clip-text">
+        <p className="font-bold text-2xl text-transparent bg-gradient-to-r from-pink to-strongBlue bg-clip-text max-w-fit">
           Put your
           <br />
           character on stage
         </p>
-        <div className="grid grid-cols-2 pt-5 pb-2">
+        <div className="grid grid-cols-2 pt-5 pb-2 gap-2.5">
           <Image
-            src="/images/landing2.png"
-            className="rounded-lg"
+            src="/images/preview3.png"
+            className="rounded-lg shadow-2xl shadow-purple/50"
             width={1080}
             height={1080}
             alt="landing1"
           />
           <Image
-            src="/images/landing3.png"
+            src="/images/preview4.png"
+            className="rounded-lg shadow-2xl shadow-blue-500/50"
             width={1080}
             height={1080}
             alt="landing1"

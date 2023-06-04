@@ -21,6 +21,7 @@ module.exports = {
         gray500: "#A0A4A8",
         gray700: "#52575C",
         pink: "#C746DB",
+        strongBlue: "#5734E5",
         purple: "#7859F5",
       },
       fontFamily: {

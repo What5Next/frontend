@@ -1,22 +1,26 @@
-import { cls } from "@/utils/tailwindCss";
 import Image from "next/image";
 import { useCallback, useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { NFTStorage } from "nft.storage";
+
 import nearStore from "@/store/nearStore";
+import { cls } from "@/utils/tailwindCss";
 import { getWalletAuthKey } from "@/utils/auth";
 import { NftMintCompleteModal } from "@/components/Modal";
+import { useRouter } from "next/router";
 
 const client = new NFTStorage({
   token: process.env.NEXT_PUBLIC_IPFS_API_KEY as string,
 });
 
 const Upload = () => {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [images, setImages] = useState<File[]>([]);
   const [name, setName] = useState<string>("");
   const [desc, setDesc] = useState<string>("");
 
+  const router = useRouter();
   const { wallet } = nearStore();
 
   useEffect(() => {
@@ -24,6 +28,7 @@ const Upload = () => {
       setName("");
       setDesc("");
       setImages([]);
+      setIsOpen(false);
     };
   }, []);
 
@@ -41,6 +46,8 @@ const Upload = () => {
     }
 
     try {
+      setIsLoading(true);
+
       const cid = await client.storeDirectory(images);
 
       await wallet?.createNewNftContract(name);
@@ -62,18 +69,22 @@ const Upload = () => {
       setIsOpen(true);
     } catch (e) {
       console.error(e);
+    } finally {
+      setIsLoading(false);
     }
   }, [name, desc, images]);
 
   return (
     <div className="pb-12">
       <div className="flex justify-between p-6 bg-black text-white strongWhite">
-        <Image
-          src="/svgs/hamberger.svg"
-          width={18}
-          height={20}
-          alt="hamberger svg"
-        />
+        <button type="button" onClick={() => router.push("/")}>
+          <Image
+            src="/svgs/hamberger.svg"
+            width={18}
+            height={20}
+            alt="hamberger svg"
+          />
+        </button>
         <div className="flex gap-1">
           <Image
             src="/svgs/onstage-logo.svg"
@@ -146,9 +157,20 @@ const Upload = () => {
         type="button"
         onClick={onUpload}
         className="fixed bottom-0 flex justify-center items-center bg-purple w-full h-16 font-bold text-white text-xl disabled:bg-gray500"
-        disabled={name.length === 0 || desc.length === 0}
+        disabled={name.length === 0 || desc.length === 0 || isLoading}
       >
-        Upload
+        {isLoading ? (
+          <div className="animate-spin">
+            <Image
+              width={36}
+              height={36}
+              src="/svgs/loading.svg"
+              alt="loading"
+            />
+          </div>
+        ) : (
+          <span>Upload</span>
+        )}
       </button>
 
       <NftMintCompleteModal
