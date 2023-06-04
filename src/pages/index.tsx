@@ -37,9 +37,9 @@ const Home = () => {
           />
           <div className="absolute text-white bottom-0 p-5">
             <p className="font-bold text-2xl pb-2">
-              Protect your drawing
+              Make your creations
               <br />
-              with NFTs
+              and styles into NFTs
             </p>
             <p className="text-sm">
               Onstage protects the rights of creators.
@@ -55,7 +55,7 @@ const Home = () => {
             <br />
             character on stage
           </p>
-          <div className="grid grid-cols-2 pt-5 pb-2 gap-2.5">
+          <div className="grid grid-cols-2 py-5 gap-2.5">
             <Image
               src="/images/preview3.png"
               className="rounded-lg shadow-2xl shadow-purple/50"
@@ -71,7 +71,7 @@ const Home = () => {
               alt="landing1"
             />
           </div>
-          <p>
+          <p className="text-sm">
             If you make your creations into NFTs, you can use them in other
             contents as well. In the process, you can earn money through IP.
             Build your character on the stage of various contents! Many people
@@ -89,7 +89,7 @@ const Home = () => {
           <h1 className="text-white text-3xl font-bold">onstage</h1>
         </div>
 
-        <div className="sticky bottom-4 px-5">
+        <div className="px-5">
           <button
             type="button"
             onClick={() => router.push("/upload")}

@@ -21,7 +21,7 @@ const Upload = () => {
   const [desc, setDesc] = useState<string>("");
 
   const router = useRouter();
-  const { wallet } = nearStore();
+  const { wallet, isWalletStarted } = nearStore();
 
   useEffect(() => {
     return () => {
@@ -41,6 +41,8 @@ const Upload = () => {
   });
 
   const onUpload = useCallback(async () => {
+    if (!isWalletStarted) return;
+
     if (!images || images.length === 0) {
       return alert("No images");
     }
